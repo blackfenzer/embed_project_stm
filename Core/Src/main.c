@@ -247,24 +247,30 @@ int main(void)
 	  	sprintf(buffer, "{\"soil\":%d,\"humidity\":%d,\"light\":%d}$",soil,water,adcval);
 	  	if(counter==0){
 	  	//HAL_UART_Transmit(&huart2, &buffer, strlen(buffer), HAL_MAX_DELAY);
-	  	HAL_UART_Transmit(&huart1, &buffer, strlen(buffer), HAL_MAX_DELAY);} else{
-	  		if( x < 1300 ){
+	  	HAL_UART_Transmit(&huart1, &buffer, strlen(buffer), 1000);
+	  	HAL_Delay(100);
+	  	}
+	  	//else{
+	  	else if( x < 1300 && counter == 5){
 	  			   	    	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10,GPIO_PIN_SET );
 	  			   	    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4,GPIO_PIN_RESET );
 	  			   	    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5,GPIO_PIN_RESET );
 	  			   	    	//HAL_UART_Transmit(&huart2, "1$", strlen("1$"), HAL_MAX_DELAY);
-	  			   	    	HAL_UART_Transmit(&huart1, "1$", strlen("1$"), HAL_MAX_DELAY);
+	  			   	    	HAL_UART_Transmit(&huart1, "1$", strlen("1$"), 1000);
+	  			   	    	HAL_Delay(100);
 	  			   	      }
-	  			   	      else{
+	  			   	      else if(x>=1300 && counter == 5){
+
 	  			   	    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10,GPIO_PIN_RESET );
 	  			   	    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4,GPIO_PIN_RESET );
 	  			   	    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5,GPIO_PIN_SET );
 	  			   	    	//HAL_UART_Transmit(&huart2, "0$", strlen("0$"), HAL_MAX_DELAY);
-	  			   	    	HAL_UART_Transmit(&huart1, "0$", strlen("0$"), HAL_MAX_DELAY);
+	  			   	    	HAL_UART_Transmit(&huart1, "0$", strlen("0$"), 1000);
+	  			   	    	HAL_Delay(100);
 	  			   	      }
-	  	}
+	  	//}
 	  	counter++;
-	  	if(counter>=15)counter=0;
+	  	if(counter>=10)counter=0;
 	  	HAL_Delay(1000);
 
 
@@ -451,7 +457,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
